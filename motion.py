@@ -6,8 +6,9 @@ from os import mkdir
 import requests
 import time
 from const import assets
-from os import environ as options
+# from os import environ as options
 
+from conf import options
 
 blacklist = ["inter", "segment", "facebook", "fullstory", "loggly.js", "app-"]
 notions = {}
@@ -147,7 +148,7 @@ class Notion:
         else:
             local_filename = "site/" + self.filename
         md(local_filename)
-        with open(local_filename, "w") as f:
+        with open(local_filename, "w", encoding='utf-8') as f:
             f.write(self.html)
 
     def gen_html(self):
@@ -170,7 +171,6 @@ class Notion:
         intercom_css = self.dom.find('style', id_="intercom-stylesheet")
         if intercom_css:
             intercom_css.decompose()
-
 
     def disqus(self):
         for div in self.divs:
@@ -214,7 +214,9 @@ class Notion:
                 div.decompose()
                 continue
             if in_html:
-                inner_html = BeautifulSoup(BeautifulSoup(str(div).replace('</span>!(notion)!', '</span>'), "html.parser").find('div').text.strip('HTML'))
+                inner_html = BeautifulSoup(
+                    BeautifulSoup(str(div).replace('</span>!(notion)!', '</span>'), "html.parser").find(
+                        'div').text.strip('HTML'))
                 div.replace_with(inner_html)
                 print('Custom HTML inserted: ')
                 print('----------------------')
@@ -292,7 +294,7 @@ class Notion:
             self.options["site_title"] = title
         else:
             self.title = title + ' ' + \
-                self.options["title_sep"] + ' ' + self.options["site_title"]
+                         self.options["title_sep"] + ' ' + self.options["site_title"]
         self.dom.find("title").string = self.title
         self.dom.find("meta", attrs={"name": "twitter:site"})[
             "content"] = self.options["twitter"]
@@ -319,7 +321,7 @@ class Notion:
                                        href=self.options["base_url"] + page_path)
         else:
             new_tag = self.dom.new_tag("link", rel='alternate', media='only screen and (max-width: 768px)',
-                           href=self.options["base_url"] + 'm/' + page_path)
+                                       href=self.options["base_url"] + 'm/' + page_path)
         self.dom.find('head').append(new_tag)
         if 'atom' in self.options:
             atom = self.dom.new_tag('link', rel='feed', type="application/atom+xml", href="/feed")
@@ -360,8 +362,8 @@ class Notion:
         for img in self.dom.find_all("img"):
             if img["src"].startswith("/"):
                 download_file("https://notion.so" + img["src"], img["src"][1:])
-#             elif img["src"].startswith("https://notion.imgix.net/"):
-#                 download_file(img["src"], img)
+            #             elif img["src"].startswith("https://notion.imgix.net/"):
+            #                 download_file(img["src"], img)
         for script in self.dom.find_all("script"):
             if script.has_attr("src") and script["src"].startswith("/"):
                 download_file("https://notion.so" +
@@ -381,7 +383,6 @@ class Notion:
                 page.mod()
                 visited.add(link)
                 page.walk()
-
 
 
 if __name__ == "__main__":
