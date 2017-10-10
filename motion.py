@@ -362,8 +362,8 @@ class Notion:
         for img in self.dom.find_all("img"):
             if img["src"].startswith("/"):
                 download_file("https://notion.so" + img["src"], img["src"][1:])
-            #             elif img["src"].startswith("https://notion.imgix.net/"):
-            #                 download_file(img["src"], img)
+                #             elif img["src"].startswith("https://notion.imgix.net/"):
+                #                 download_file(img["src"], img)
         for script in self.dom.find_all("script"):
             if script.has_attr("src") and script["src"].startswith("/"):
                 download_file("https://notion.so" +
@@ -386,6 +386,6 @@ class Notion:
 
 
 if __name__ == "__main__":
-    motion()
-    if "build_mobile" in options:
+    while True:
+        motion()
         motion(is_mobile=True)
