@@ -3,10 +3,10 @@
 # in your Travis CI as environment variables.
 
 options = {
-    "index": "https://www.notion.so/Static-Motion-308b107a54494ef09b6537a251d96b80",
+    "index": "https://www.notion.so/Aollio-s-Blog-5cdf3da3183a4134b66b8024ec26ac07",
     "title_sep": "-",
     "description": "Make your static site from Notion.so.",
-    "twitter": "@chzenan",
-    "base_url": "https://staticmotion.zenan.ch/",
-    "build_mobile": "true"
+    "twitter": "@aollio_hou",
+    "base_url": "http://aollio.com/",
+    "build_mobile": "true",
 }
