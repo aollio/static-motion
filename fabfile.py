@@ -8,8 +8,8 @@ from os import environ as options
 
 # 服务器登录用户名:
 env.user = 'root'
-# env.password = options['password']
-env.password = 'password'
+env.password = options['password']
+# env.password = 'password'
 # sudo用户为root:
 # env.sudo_user = 'root'
 # 服务器地址，可以有多个，依次部署:
@@ -34,7 +34,7 @@ def deploy():
     # 删除已有的tar文件:
     run('rm -f %s' % _REMOTE_TMP_TAR)
     # 上传新的tar文件:
-    put(os.path.join(os.path.abspath('..'), 'dist', _TAR_FILE), _REMOTE_TMP_TAR)
+    put(os.path.join(os.path.abspath('.'), 'dist', _TAR_FILE), _REMOTE_TMP_TAR)
     # 创建新目录:
     with cd(_REMOTE_BASE_DIR):
         run('mkdir %s' % newdir)
