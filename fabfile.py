@@ -8,7 +8,8 @@ from os import environ as options
 
 # 服务器登录用户名:
 env.user = 'root'
-env.password = options['password']
+# env.password = options['password']
+env.password = 'password'
 # sudo用户为root:
 # env.sudo_user = 'root'
 # 服务器地址，可以有多个，依次部署:
@@ -18,14 +19,9 @@ _TAR_FILE = 'dist-blog.tar.gz'
 
 
 def build():
-    includes = ['*']
-    excludes = ['.*']
     local('rm -f dist/%s' % _TAR_FILE)
-    with lcd('site'):
-        cmd = ['tar', '--dereference', '-czvf', '../dist/%s' % _TAR_FILE]
-        cmd.extend(['--exclude=\'%s\'' % ex for ex in excludes])
-        cmd.extend(includes)
-        local(' '.join(cmd))
+    cmd = ['tar', '-czvf', 'dist/%s' % _TAR_FILE, 'site/*']
+    local(' '.join(cmd))
 
 
 _REMOTE_TMP_TAR = '/tmp/%s' % _TAR_FILE
