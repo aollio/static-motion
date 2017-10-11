@@ -325,6 +325,7 @@ class Notion:
         else:
             new_tag = self.dom.new_tag("link", rel='alternate', media='only screen and (max-width: 768px)',
                                        href=self.options["base_url"] + 'm/' + page_path)
+
         self.dom.find('head').append(new_tag)
         if 'atom' in self.options:
             atom = self.dom.new_tag('link', rel='feed', type="application/atom+xml", href="/feed")
@@ -345,6 +346,11 @@ class Notion:
         else:
             self.dom.find("meta", attrs={"property": "og:image"}).decompose()
             self.dom.find("meta", attrs={"name": "twitter:image"}).decompose()
+        self.dom.find('link', attrs={'rel': 'shortcut icon', 'type': 'image/x-icon'}).decompose()
+        # favicon
+        new_favicon = self.dom.new_tag("link", rel='shortcut icon',
+                                       href='/favicon.ico')
+        self.dom.find('head').append(new_favicon)
 
     def remove_scripts(self):
         for s in self.dom.find_all("script"):
