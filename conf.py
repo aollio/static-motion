@@ -9,5 +9,6 @@ options = {
     "twitter": "@aollio_hou",
     "base_url": "http://aollio.com/",
     "build_mobile": "true",
-    "favicon": "favicon.png"
+    "favicon": "favicon.png",
+    "apple_touch_icon": "favicon.png"
 }
