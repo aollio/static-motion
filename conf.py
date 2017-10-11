@@ -9,6 +9,6 @@ options = {
     "twitter": "@aollio_hou",
     "base_url": "http://aollio.com/",
     "build_mobile": "true",
-    "favicon": "favicon.png",
-    "apple_touch_icon": "favicon.png"
+    "favicon": "https://cdn.shopify.com/s/files/1/1061/1924/files/Lemon_Emoji.png?9898922749706957214",
+    "apple_touch_icon": "https://cdn.shopify.com/s/files/1/1061/1924/files/Lemon_Emoji.png?9898922749706957214"
 }
