@@ -114,6 +114,9 @@ class Notion:
             download_file("https://notion.so/" + f, f)
         if 'favicon' in self.options:
             download_file(self.options['favicon'], "favicon.ico")
+            download_file(self.options['favicon'], "favicon")
+            download_file(self.options['favicon'], "images/favicon")
+            download_file(self.options['favicon'], "images/favicon.ico")
         if 'apple_touch_icon' in self.options:
             download_file(self.options['apple_touch_icon'], 'images/logo-ios.png')
         if 'atom' in self.options:
