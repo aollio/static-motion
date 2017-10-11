@@ -8,5 +8,6 @@ options = {
     "description": "Aollio's Blog.",
     "twitter": "@aollio_hou",
     "base_url": "http://aollio.com/",
-    "build_mobile": "true"
+    "build_mobile": "true",
+    "favicon": "favicon.png"
 }
