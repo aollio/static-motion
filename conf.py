@@ -4,7 +4,7 @@
 
 options = {
     "index": "https://www.notion.so/Aollio-s-Blog-5cdf3da3183a4134b66b8024ec26ac07",
-    "title_sep": " ",
+    "title_sep": " | ",
     "description": "Aollio's Blog.",
     "twitter": "@aollio_hou",
     "base_url": "http://aollio.com/",

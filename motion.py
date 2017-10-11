@@ -113,7 +113,7 @@ class Notion:
         for f in assets:
             download_file("https://notion.so/" + f, f)
         if 'favicon' in self.options:
-            download_file(self.options['favicon'], "images/favicon.ico")
+            download_file(self.options['favicon'], "favicon.ico")
         if 'apple_touch_icon' in self.options:
             download_file(self.options['apple_touch_icon'], 'images/logo-ios.png')
         if 'atom' in self.options:
@@ -386,6 +386,5 @@ class Notion:
 
 
 if __name__ == "__main__":
-    # while True:
     motion()
     motion(is_mobile=True)
