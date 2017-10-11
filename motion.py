@@ -386,6 +386,6 @@ class Notion:
 
 
 if __name__ == "__main__":
-    while True:
-        motion()
-        motion(is_mobile=True)
+    # while True:
+    motion()
+    motion(is_mobile=True)
