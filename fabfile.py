@@ -8,12 +8,12 @@ from os import environ as options
 
 # 服务器登录用户名:
 env.user = 'root'
-env.password = options['password']
+# env.password = options['password']
 # env.password = 'password'
 # sudo用户为root:
 # env.sudo_user = 'root'
 # 服务器地址，可以有多个，依次部署:
-env.hosts = ['106.14.190.186']
+# env.hosts = ['106.14.190.186']
 
 _TAR_FILE = 'dist-blog.tar.gz'
 
@@ -22,6 +22,28 @@ def build():
     local('rm -f dist/%s' % _TAR_FILE)
     cmd = ['tar', '-czvf', 'dist/%s' % _TAR_FILE, 'site/*']
     local(' '.join(cmd))
+
+
+_LOCAL_DIR = '~/Projects/aollio.github.io'
+_LOCAL_PATH = os.path.join(os.path.abspath('.'), 'dist', _TAR_FILE)
+
+
+def deploy_local():
+    build()
+    with lcd(_LOCAL_DIR):
+
+        local('rm -rf scripts')
+        local('rm -rf css-print')
+        local('rm -rf fonts')
+        local('rm -rf images')
+        local('rm -rf m')
+
+        local('tar -xzvf %s' % _LOCAL_PATH)
+        local('mv site/* .')
+        local('rm -rf site')
+        local('git add .')
+        local('git commit -m update')
+        local('git push')
 
 
 _REMOTE_TMP_TAR = '/tmp/%s' % _TAR_FILE
@@ -50,3 +72,8 @@ def deploy():
         # sudo('supervisorctl stop awesome')
         # sudo('supervisorctl start awesome')
         # sudo('nginx -s reload')
+
+
+def run():
+    local('pipenv run python motion.py')
+    deploy_local()

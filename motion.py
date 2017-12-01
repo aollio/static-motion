@@ -1,3 +1,4 @@
+import sys
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from bs4 import BeautifulSoup
@@ -10,11 +11,33 @@ from const import assets
 
 from conf import options
 
-blacklist = ["inter", "segment", "facebook", "fullstory", "loggly.js", "app-"]
+blacklist = ["inter", "segment", "facebook", "fullstory", "loggly.js", "app-", 'scripts/jump.js']
 notions = {}
 user_agent = 'Mozilla/5.0 (iPhone; CPU iPhone OS 10_0 like Mac OS X) AppleWebKit/602.1.38 (KHTML, like Gecko) Version/10.0 Mobile/14A300 Safari/602.1'
 visited = set()
 notions = {}
+
+
+def init():
+    # create cname file
+    if not exists('site'):
+        mkdir('site')
+    with open('site/CNAME', mode='w+', encoding='utf-8') as f:
+        for each_cname in options['cname']:
+            f.write(each_cname)
+        f.flush()
+
+    # with open('index.html', mode='r', encoding='utf-8') as ori, open('site/index.html', 'w+') as tar:
+    #     content = ori.read()
+    #     tar.write(content)
+    #     tar.flush()
+
+    if not exists('site/scripts'):
+        mkdir('site/scripts')
+    with open('jump.js', mode='r', encoding='utf-8') as ori, open('site/scripts/jump.js', 'w+') as tar:
+        content = ori.read()
+        tar.write(content)
+        tar.flush()
 
 
 def motion(is_mobile=False):
@@ -126,7 +149,7 @@ class Notion:
         try:
             self.save_assets()
             self.meta()
-            # self.remove_overlay()
+            self.remove_overlay()
             self.clean()
             self.parse_links()
             self.remove_scripts()
@@ -135,7 +158,7 @@ class Notion:
             self.disqus()
             self.gen_html()
         except Exception as e:
-            print(e)
+            print(e, file=sys.stderr)
             self.dom = BeautifulSoup(self.driver.page_source.replace('</span>', '</span>!(notion)!'), "html.parser")
             if no_retry:
                 print("Unhandled Error, exciting...")
@@ -282,14 +305,15 @@ class Notion:
                 print("Internal link with anchor detected: " + a['href'])
 
     def meta(self):
+
         if self.dom.find('html').has_attr("manifest"):
             self.dom.find('html')["manifest"] = ''
         if not self.is_mobile:
-            titles = [i for i in self.dom.find_all(
-                "div") if (i.has_attr("style") and i.has_attr('data-block-id') and "2.25em" in i["style"])]
+            titles = [i for i in self.dom.find_all("div")
+                      if (i.has_attr("style") and i.has_attr('data-block-id') and "2.25em" in i["style"])]
         else:
-            titles = [i for i in self.dom.find_all(
-                "div") if (i.has_attr("style") and i.has_attr('data-block-id') and "2em" in i["style"])]
+            titles = [i for i in self.dom.find_all("div")
+                      if (i.has_attr("style") and i.has_attr('data-block-id') and "2em" in i["style"])]
         title = titles[0].text.strip()
         titles[0]["id"] = 'title'
         if self.is_index:
@@ -362,8 +386,15 @@ class Notion:
             s.decompose()
         for s in self.dom.find_all("noscript"):
             s.decompose()
+        # delete in IOS safari pop that download notion app
+        for meta in self.dom.find_all('meta', attrs={'name': 'apple-itunes-app'}):
+            meta.decompose()
+
+        jump_tag = self.dom.new_tag(name='script', src='scripts/jump.js', type='text/javascript')
+        self.dom.find('head').append(jump_tag)
 
     def save_assets(self):
+        """Download assets."""
         for css in self.dom.find_all("link"):
             if css["href"].startswith("/") and ("stylesheet" in css["rel"]):
                 download_file("https://notion.so" +
@@ -395,5 +426,6 @@ class Notion:
 
 
 if __name__ == "__main__":
+    init()
     motion()
     motion(is_mobile=True)
